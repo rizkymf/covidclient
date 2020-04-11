@@ -1,0 +1,56 @@
+<main>
+    <section class="section section-lg section-hero section-shaped">
+        <div class="container">
+          <div class="row row-grid">
+            <div class="col px-0">
+              <div class="pr-md-5">
+                  <br>
+                  <br>
+                <div class="row align-items-center justify-content-center">
+                    <p-table [columns]="cols" [value]="users" styleClass="ui-table-users" [rowHover]="true" [rows]="10" [loading]="loading" [paginator]="true" [lazy]="true" (onLazyLoad)="loadUsersLazy($event)"
+                    showCurrentPageReport="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" align="center">
+                    <ng-template pTemplate="caption">
+                        List of Users<br><br>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <!-- <th *ngFor="let col of cols">
+                                {{col.header}}
+                            </th> -->
+                            <th pSortableColumn="idUser">ID<p-sortIcon field="idUser"></p-sortIcon></th>
+                            <th pSortableColumn="nama">Nama<p-sortIcon field="nama"></p-sortIcon></th>
+                            <th pSortableColumn="uname">Username<p-sortIcon field="uname"></p-sortIcon></th>
+                            <th pSortableColumn="pwd">Password<p-sortIcon field="pwd"></p-sortIcon></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-user>
+                        <tr class="ui-selectable-row">
+                            <!-- <td *ngFor="let col of cols" class="ui-resizable-column">
+                                {{user[col.field]}}
+                            </td> -->
+                            <td>
+                                <span class="ui-column-title">ID</span>
+                                {{user.idUser}}
+                            </td>
+                            <td>
+                                <span class="ui-column-title">Nama</span>
+                                {{user.nama}}
+                            </td>
+                            <td>
+                                <span class="ui-column-title">Username</span>
+                                {{user.uname}}
+                            </td>
+                            <td>
+                                <span class="ui-column-title"></span>
+                                {{user.pwd}}
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+</main>
