@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { Location, PopStateEvent } from '@angular/common';
-import { Login } from 'src/app/login/login';
 
 @Component({
     selector: 'app-navbar',
@@ -12,9 +11,6 @@ export class NavbarComponent implements OnInit {
     public isCollapsed = true;
     private lastPoppedUrl: string;
     private yScrollStack: number[] = [];
-    navStatus : boolean;
-    // navStatus = true;
-    login = new Login;
 
     constructor(public location: Location, private router: Router) {
     }
@@ -36,8 +32,6 @@ export class NavbarComponent implements OnInit {
      this.location.subscribe((ev:PopStateEvent) => {
          this.lastPoppedUrl = ev.url;
      });
-
-     this.navStatus = this.login.notLoggedIn
     }
 
     isHome() {

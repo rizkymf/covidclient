@@ -19,10 +19,6 @@ export class UserServiceService {
 
   constructor(private http: HttpClient) { }
 
-  login(loginPayLoad):Observable<User> {
-    return this.http.post<User>('http://localhost:8080/' + 'token/generate-token', loginPayLoad)
-  }
-
   private handleError(error : any){
     console.log(error)
     return throwError(error)
@@ -59,12 +55,7 @@ export class UserServiceService {
     )
   }
 
-  public checkUser(uname : any, pwd : any) : Observable<User>{
-    let headers = new HttpHeaders()
-    .set("uname", uname).set("pwd", pwd)
-    return this.http.get<any>(this.url + "/login", {headers}).pipe(
-      tap(data=> console.log(data))
-      )
-    
+  public checkUser(user) : Observable<User>{
+    return this.http.post<User>(this.url + "/login", user)
   }
 }

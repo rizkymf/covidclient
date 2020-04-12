@@ -1,11 +1,6 @@
 <section class="section pb-10 bg-gradient-warning">
     <div class="container">
       <div class="row row-grid align-items-center">
-        <div class="col-md-6 order-lg-2 ml-lg-auto">
-          <div class="position-relative pl-md-5">
-            <!-- <img src="./assets/img/ill/ill-2.svg" class="img-center img-fluid"> -->
-          </div>
-        </div>
         <div class="col-lg-6 order-lg-1">
           <div class="d-flex px-3">
             <div>
@@ -14,7 +9,9 @@
               </div>
             </div>
             <div class="pl-4">
-              <h4 class="display-3 text-white">Modern Interface</h4>
+              <h4 class="display-3 text-white">Covid-19 Data</h4>
+              <br>
+              <h5 class="display-3 text-white">{{kota}}</h5>
               <p-chart type="polarArea" [data]="chart" width="40vw" height="80vh"></p-chart>
             </div>
           </div>
@@ -28,7 +25,6 @@
       </svg>
     </div>
   </section>
-
   <!-- Table show -->
   <section class="section section-lg section-hero section-shaped">
     <div class="container">
@@ -36,37 +32,24 @@
         <div class="col px-0">
           <div class="pr-md-5">
             <div class="row align-items-center justify-content-center">
-                <p-table [columns]="cols" [value]="covid" styleClass="ui-table-users" [rowHover]="true" [rows]="10" [loading]="loading" [paginator]="true"
-                showCurrentPageReport="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" align="center">
+                <p-table [columns]="cols" [value]="covid" (onRowSelect)="onRowSelect($event)" selectionMode="single" [(selection)]="selectedCase" [rowHover]="true" [rows]="10" [loading]="loading" [paginator]="true" showCurrentPageReport="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" align="center">
                 <ng-template pTemplate="caption">
-                    List of Covid-19 Cases<br><br>
+                    List of Covid-19 Cases<br>
+                    (Click one of the row to show the data on the graphs)
                 </ng-template>
-                <ng-template pTemplate="header">
+                <ng-template pTemplate="header" let-columns>
                     <tr>
-                        <th pSortableColumn="idCase">ID<p-sortIcon field="idCase"></p-sortIcon></th>
-                        <th pSortableColumn="kota">City<p-sortIcon field="kota"></p-sortIcon></th>
-                        <th pSortableColumn="positif">Positive<p-sortIcon field="positif"></p-sortIcon></th>
-                        <th pSortableColumn="meninggal">Deaths<p-sortIcon field="meninggal"></p-sortIcon></th>
+                      <th *ngFor="let col of cols" [pSortableColumn] = "col.field">
+                        {{col.header}}
+                        <p-sortIcon [field]="col.field"></p-sortIcon>
+                      </th>  
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-covid>
-                    <tr class="ui-selectable-row">
-                        <td>
-                            <span class="ui-column-title">ID</span>
-                            {{covid.idCase}}
-                        </td>
-                        <td>
-                            <span class="ui-column-title">City</span>
-                            {{covid.kota}}
-                        </td>
-                        <td>
-                            <span class="ui-column-title">Positive</span>
-                            {{covid.positif}}
-                        </td>
-                        <td>
-                            <span class="ui-column-title">Deaths</span>
-                            {{covid.meninggal}}
-                        </td>
+                <ng-template pTemplate="body" let-rowData let-case>
+                    <tr [pSelectableRow]="rowData">
+                        <td *ngFor="let col of cols">
+                          {{rowData[col.field]}}
+                      </td>
                     </tr>
                 </ng-template>
             </p-table>

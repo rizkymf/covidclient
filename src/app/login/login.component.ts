@@ -2,11 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserServiceService } from '../service/user-service.service';
 import { User } from '../model/user';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Login } from './login'
 import { Router } from '@angular/router';
-import { AuthenticationService } from '../service/authentication.service';
-import { HttpParams } from '@angular/common/http';
-import { Form } from '@angular/forms'
 
 @Component({
   selector: 'app-login',
@@ -16,6 +12,7 @@ import { Form } from '@angular/forms'
 export class LoginComponent implements OnInit {
   focus;
   focus1;
+  loginUser = new User()
   users : User[] = []
   user : User
   userCheck : User
@@ -25,7 +22,6 @@ export class LoginComponent implements OnInit {
   invalidLogin: boolean = false
   uname = ""
   pwd = ""
-  login = new Login();
 
   constructor(private formBuilder: FormBuilder, private router: Router, private service : UserServiceService) { 
       service.getUser().subscribe(
@@ -35,17 +31,25 @@ export class LoginComponent implements OnInit {
       )
    }
    onSubmit(){
-       if(this.loginForm.invalid){
-           return
-       }
-       this.service.checkUser(this.uname, this.pwd).subscribe((res:any) => {
+       this.service.checkUser(this.loginUser)
+       .subscribe((res) => {
            this.user = res,
-        //    err => this.login.isLogout(),
-           err => console.log("ERROR EUY! : " + JSON.stringify(err)),
-           () => console.log("done!");
-           
-        //    () => this.router.navigate(['./covid'])          
-       })
+           this.posisi()    
+       });
+   }
+
+   
+
+   posisi(){
+       if(this.user.uname=="" && this.user.pwd==""){
+           console.log("gagal");
+       } else {
+           if(this.user.posisi=="admin"){
+               this.router.navigate(['./landing'])
+           } else {
+               this.router.navigate(['./covid'])
+           }
+       }
    }
 
   ngOnInit() {

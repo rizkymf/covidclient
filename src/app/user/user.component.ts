@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { UserServiceService } from '../service/user-service.service';
 import { User } from '../model/user';
-import { TableModule } from 'primeng/table';
-import { LazyLoadEvent } from 'primeng/api/public_api';
 
 @Component({
   selector: 'app-user',
@@ -40,7 +38,8 @@ export class UserComponent implements OnInit {
       {field: 'idUser', header:'ID'},
       {field: 'nama', header:'Nama'},
       {field: 'uname', header:'Username'},
-      {field: 'pwd', header:'Password'}
+      {field: 'pwd', header:'Password'},
+      {field: 'posisi', header:'Roles'}
     ]
   }
 
@@ -51,7 +50,7 @@ export class UserComponent implements OnInit {
       'nama' : '' ,
       'posisi' : '',
       'pwd' : '', 
-      'uname' : ''
+      'uname' : '',
     }
     this.displayDialog = true
   }

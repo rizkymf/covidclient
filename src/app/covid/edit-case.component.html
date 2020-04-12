@@ -1,0 +1,119 @@
+<section class="section section-lg bg-gradient-danger">
+    <div class="container pt-lg pb-50">
+      <div class="row text-center justify-content-center">
+        <div class="col-lg-10">
+          <h2 class="display-3 text-white">Covid-19 Data</h2>
+          <p class="lead text-white">Here you can manipulate the data of Covid-19 cases. Click on the row to edit or delete the data and click add button to add the data. Refresh the page to show the newest table</p>
+        </div>
+      </div>
+    </div>
+    <!-- SVG separator -->
+    <div class="separator separator-bottom separator-skew zindex-100">
+      <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <polygon class="fill-white" points="2560 0 2560 100 0 100"></polygon>
+      </svg>
+    </div>
+  </section>
+  <section class="section section-lg section-hero section-shaped">
+    <div class="container">
+      <div class="row row-grid">
+        <div class="col px-0">
+          <div class="pr-md-5">
+            <div class="row align-items-center justify-content-center">
+                <p-table [columns]="cols" [value]="covid" (onRowSelect)="onRowSelect($event)" selectionMode="single" [(selection)]="selectedCase" [rowHover]="true" [rows]="10" [loading]="loading" [paginator]="true" showCurrentPageReport="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" align="center">
+                <ng-template pTemplate="caption">
+                    List of Covid-19 Cases<br><br>
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                      <th *ngFor="let col of cols" [pSortableColumn] = "col.field">
+                        {{col.header}}
+                        <p-sortIcon [field]="col.field"></p-sortIcon>
+                      </th>  
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-case>
+                    <tr [pSelectableRow]="rowData">
+                        <td *ngFor="let col of cols">
+                          {{rowData[col.field]}}
+                      </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary" let-rowData>
+                    <div style="text-align:left">
+                        <button type="button" pButton icon="pi pi-plus" (click)="showDialogToAdd()" label="Add"></button>
+                    </div>
+                </ng-template>
+            </p-table>
+            <p-dialog header="Case Details" [(visible)]="displayDialog" [focusOnShow]="false" [responsive]="true" showEffect="fade" [modal]="true"  [style]="{width: '300px'}">
+              <div class="ui-g ui-fluid" *ngIf="case">
+                  <div class="ui-g-12">
+                      <div class="ui-g-4">
+                          <label for="idCase">ID</label>
+                      </div>
+                      <div class="ui-g-8">
+                          <input pInputText id="idCase" [(ngModel)]="case.idCase" autofocus />
+                      </div>
+                  </div>
+                  <div class="ui-g-12">
+                      <div class="ui-g-4">
+                          <label for="kota">City</label>
+                      </div>
+                      <div class="ui-g-8">
+                          <input pInputText id="kota" [(ngModel)]="case.kota" />
+                      </div>
+                  </div>
+                  <div class="ui-g-12">
+                      <div class="ui-g-4">
+                          <label for="positif">Positive</label>
+                      </div>
+                      <div class="ui-g-8">
+                          <input pInputText id="positif" [(ngModel)]="case.positif" />
+                      </div>
+                  </div>
+                  <div class="ui-g-12">
+                      <div class="ui-g-4">
+                          <label for="meninggal">Deaths</label>
+                      </div>
+                      <div class="ui-g-8">
+                          <input pInputText id="meninggal" [(ngModel)]="case.meninggal" />
+                      </div>
+                  </div>
+                  <div class="ui-g-12">
+                    <div class="ui-g-4">
+                        <label for="sembuh">Cured</label>
+                    </div>
+                    <div class="ui-g-8">
+                        <input pInputText id="sembuh" [(ngModel)]="case.sembuh" />
+                    </div>
+                  </div>
+                  <div class="ui-g-12">
+                    <div class="ui-g-4">
+                        <label for="odp">ODP</label>
+                    </div>
+                    <div class="ui-g-8">
+                        <input pInputText id="odp" [(ngModel)]="case.odp" />
+                    </div>
+                  </div>
+                  <div class="ui-g-12">
+                    <div class="ui-g-4">
+                        <label for="pdp">PDP</label>
+                    </div>
+                    <div class="ui-g-8">
+                        <input pInputText id="pdp" [(ngModel)]="case.pdp" />
+                    </div>
+                  </div>
+                </div>
+              <p-footer>
+                  <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                      <button type="button" pButton icon="pi pi-times" (click)="delete()" label="Delete"></button>
+                      <button type="button" pButton icon="pi pi-check" (click)="update()" label="Update"></button>
+                  </div>
+              </p-footer>
+          </p-dialog>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

@@ -1,98 +1,100 @@
-<main>
-    <section class="section section-lg section-hero section-shaped">
-        <div class="container">
-          <div class="row row-grid">
-            <div class="col px-0">
-              <div class="pr-md-5">
-                  <br>
-                  <br>
-                <div class="row align-items-center justify-content-center">
-                    <p-table [columns]="cols" [value]="users" (onRowSelect)="onRowSelect($event)" selectionMode="single" [(selection)]="selectedUser" align="center">
-                    <ng-template pTemplate="caption">
-                        List of Users<br><br>
-                    </ng-template>
-                    <ng-template pTemplate="header" let-columns>
-                        <tr>
-                            <th *ngFor="let col of cols" [pSortableColumn] = "col.field">
-                                {{col.header}}
-                                <p-sortIcon [field]="col.field"></p-sortIcon>
-                            </th>
-                            <!-- <th pSortableColumn="idUser">ID<p-sortIcon field="idUser"></p-sortIcon></th>
-                            <th pSortableColumn="nama">Nama<p-sortIcon field="nama"></p-sortIcon></th>
-                            <th pSortableColumn="uname">Username<p-sortIcon field="uname"></p-sortIcon></th>
-                            <th pSortableColumn="pwd">Password<p-sortIcon field="pwd"></p-sortIcon></th> -->
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-rowData let-user>
-                        <tr [pSelectableRow]="rowData">
-                            <td *ngFor="let col of cols">
-                                {{rowData[col.field]}}
-                            </td>
-                            <!-- <td>
-                                <span class="ui-column-title">ID</span>
-                                {{user.idUser}}
-                            </td>
-                            <td>
-                                <span class="ui-column-title">Nama</span>
-                                {{user.nama}}
-                            </td>
-                            <td>
-                                <span class="ui-column-title">Username</span>
-                                {{user.uname}}
-                            </td>
-                            <td>
-                                <span class="ui-column-title"></span>
-                                {{user.pwd}}
-                            </td> -->
-                        </tr>
-                    </ng-template>
-                </p-table>
-                <p-dialog header="User Details" [(visible)]="displayDialog" [focusOnShow]="false" [responsive]="true" showEffect="fade" [modal]="true"  [style]="{width: '300px'}">
-                    <div class="ui-g ui-fluid" *ngIf="user">
-                        <div class="ui-g-12">
-                            <div class="ui-g-4">
-                                <label for="idUser">ID</label>
-                            </div>
-                            <div class="ui-g-8">
-                                <input pInputText id="idUser" [(ngModel)]="user.idUser" autofocus />
-                            </div>
+<section class="section section-lg bg-gradient-default">
+    <div class="container pt-lg pb-50">
+      <div class="row text-center justify-content-center">
+        <div class="col-lg-10">
+          <h2 class="display-3 text-white">Users Data</h2>
+          <p class="lead text-white">Here you can manipulate the users data. Click on the row to edit or delete the data.</p>
+        </div>
+      </div>
+    </div>
+    <!-- SVG separator -->
+    <div class="separator separator-bottom separator-skew zindex-100">
+      <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <polygon class="fill-white" points="2560 0 2560 100 0 100"></polygon>
+      </svg>
+    </div>
+  </section>
+  <section class="section section-lg section-hero section-shaped">
+    <div class="container">
+      <div class="row row-grid">
+        <div class="col px-0">
+          <div class="pr-md-5">
+              <br>
+              <br>
+            <div class="row align-items-center justify-content-center">
+                <p-table [columns]="cols" [value]="users" (onRowSelect)="onRowSelect($event)" selectionMode="single" [(selection)]="selectedUser" align="center">
+                <ng-template pTemplate="caption">
+                    List of Users<br><br>
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let col of cols" [pSortableColumn] = "col.field">
+                            {{col.header}}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-user>
+                    <tr [pSelectableRow]="rowData">
+                        <td *ngFor="let col of cols">
+                            {{rowData[col.field]}}
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <p-dialog header="User Details" [(visible)]="displayDialog" [focusOnShow]="false" [responsive]="true" showEffect="fade" [modal]="true"  [style]="{width: '300px'}">
+                <div class="ui-g ui-fluid" *ngIf="user">
+                    <div class="ui-g-12">
+                        <div class="ui-g-4">
+                            <label for="idUser">ID</label>
                         </div>
-                        <div class="ui-g-12">
-                            <div class="ui-g-4">
-                                <label for="nama">Name</label>
-                            </div>
-                            <div class="ui-g-8">
-                                <input pInputText id="nama" [(ngModel)]="user.nama" />
-                            </div>
-                        </div>
-                        <div class="ui-g-12">
-                            <div class="ui-g-4">
-                                <label for="uname">Username</label>
-                            </div>
-                            <div class="ui-g-8">
-                                <input pInputText id="uname" [(ngModel)]="user.uname" />
-                            </div>
-                        </div>
-                        <div class="ui-g-12">
-                            <div class="ui-g-4">
-                                <label for="pwd">Password</label>
-                            </div>
-                            <div class="ui-g-8">
-                                <input pInputText id="pwd" [(ngModel)]="user.pwd" />
-                            </div>
+                        <div class="ui-g-8">
+                            <input pInputText id="idUser" [(ngModel)]="user.idUser" autofocus />
                         </div>
                     </div>
-                    <p-footer>
-                        <div class="ui-dialog-buttonpane ui-helper-clearfix">
-                            <button type="button" pButton icon="pi pi-times" (click)="delete()" label="Delete"></button>
-                            <button type="button" pButton icon="pi pi-check" (click)="update()" label="Update"></button>
+                    <div class="ui-g-12">
+                        <div class="ui-g-4">
+                            <label for="nama">Name</label>
                         </div>
-                    </p-footer>
-                </p-dialog>
+                        <div class="ui-g-8">
+                            <input pInputText id="nama" [(ngModel)]="user.nama" />
+                        </div>
+                    </div>
+                    <div class="ui-g-12">
+                        <div class="ui-g-4">
+                            <label for="posisi">Roles</label>
+                        </div>
+                        <div class="ui-g-8">
+                            <input pInputText id="posisi" [(ngModel)]="user.posisi" />
+                        </div>
+                    </div>
+                    <div class="ui-g-12">
+                        <div class="ui-g-4">
+                            <label for="uname">Username</label>
+                        </div>
+                        <div class="ui-g-8">
+                            <input pInputText id="uname" [(ngModel)]="user.uname" />
+                        </div>
+                    </div>
+                    <div class="ui-g-12">
+                        <div class="ui-g-4">
+                            <label for="pwd">Password</label>
+                        </div>
+                        <div class="ui-g-8">
+                            <input pInputText id="pwd" [(ngModel)]="user.pwd" />
+                        </div>
+                    </div>
                 </div>
-              </div>
+                <p-footer>
+                    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                        <button type="button" pButton icon="pi pi-times" (click)="delete()" label="Delete"></button>
+                        <button type="button" pButton icon="pi pi-check" (click)="update()" label="Update"></button>
+                    </div>
+                </p-footer>
+            </p-dialog>
             </div>
           </div>
         </div>
-      </section>
-</main>
+      </div>
+    </div>
+  </section>
