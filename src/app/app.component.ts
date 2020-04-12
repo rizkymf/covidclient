@@ -21,8 +21,7 @@ export class AppComponent implements OnInit {
     public currentUser
 
     constructor( private renderer : Renderer2, private router: Router, @Inject(DOCUMENT,) private document: any, private element : ElementRef, public location: Location) { 
-        this.currentUser = localStorage.getItem('currentUser')?
-        JSON.parse(localStorage.getItem('currentUser')) : ''
+        
     }
 
     @HostListener('window:scroll', ['$event'])

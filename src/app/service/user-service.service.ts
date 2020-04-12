@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { User } from '../model/user'
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { tap, catchError, map} from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
+import { Headers, RequestOptions } from '@angular/http'
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,13 @@ export class UserServiceService {
   httpOptions = {
     headers : this.headers
   }
+  // user: User
+
   constructor(private http: HttpClient) { }
+
+  login(loginPayLoad):Observable<User> {
+    return this.http.post<User>('http://localhost:8080/' + 'token/generate-token', loginPayLoad)
+  }
 
   private handleError(error : any){
     console.log(error)
@@ -22,11 +29,11 @@ export class UserServiceService {
   }
 
   getUser() : Observable<User[]>{
-    return this.http.get<any>(this.url)
-  }
-
-  checkUser() : Observable<User>{
-    return this.http.get<User>(this.url)
+    return this.http.get<any>(this.url).pipe(
+      tap(data => console.log(data),
+      catchError(this.handleError)
+      )
+    )
   }
 
   addUser(user : User) : Observable<User>{
@@ -47,8 +54,17 @@ export class UserServiceService {
 
   deleteUser(id : number) : Observable<User>{
     const url = `${this.url}/${id}`
-    return this.http.delete<User>(this.url).pipe(
+    return this.http.delete<User>(url).pipe(
       catchError(this.handleError)
     )
+  }
+
+  public checkUser(uname : any, pwd : any) : Observable<User>{
+    let headers = new HttpHeaders()
+    .set("uname", uname).set("pwd", pwd)
+    return this.http.get<any>(this.url + "/login", {headers}).pipe(
+      tap(data=> console.log(data))
+      )
+    
   }
 }

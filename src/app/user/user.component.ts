@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { UserServiceService } from '../service/user-service.service';
 import { User } from '../model/user';
 import { TableModule } from 'primeng/table';
@@ -7,10 +7,13 @@ import { LazyLoadEvent } from 'primeng/api/public_api';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss']
+  styleUrls: ['./user.component.scss'],
+  encapsulation : ViewEncapsulation.None
 })
 export class UserComponent implements OnInit {
 
+  selectedUser : User
+  displayDialog : boolean
   users : User[]
   cols : any[]
   user : User
@@ -20,6 +23,7 @@ export class UserComponent implements OnInit {
   first: number = 0
   rows: number = 10
   userEdit: {[s: string]: User;} = {}
+  newUser : boolean
 
   constructor(private service : UserServiceService) { 
     service.getUser().subscribe(
@@ -30,7 +34,7 @@ export class UserComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.getUsers()
+    this.service.getUser()
 
     this.cols = [
       {field: 'idUser', header:'ID'},
@@ -40,60 +44,48 @@ export class UserComponent implements OnInit {
     ]
   }
 
-  getUsers(){
-    this.service.getUser().subscribe( dataUser => {
-        this.users = dataUser;
-    })
-}
-
-checkUser(uname: string, pwd: string){
-    this.service.checkUser().subscribe( check => {
-        this.userCheck = check;
-    })
-}
-
-deleteUser(){
-    this.service.deleteUser(this.idToDelete).subscribe(data => {
-        this.getUsers();
-    })
-}
-  reset(){
-    this.first=0
+  showDialogToAdd() {
+    this.newUser = true
+    this.user = {
+      'idUser': 0,
+      'nama' : '' ,
+      'posisi' : '',
+      'pwd' : '', 
+      'uname' : ''
+    }
+    this.displayDialog = true
   }
 
-  paginate(event){
+  onRowSelect(event) {
+    this.newUser = false
+    this.user = this.cloneUser(event.data)
+    this.displayDialog = true
   }
 
-  next(){
-    this.first = this.first + this.rows
+  cloneUser(u : User): User {
+    let user = {}
+    for(let prop in u){
+      user[prop] = u[prop]
+    }
+    return u
   }
 
-  prev(){
-    this.first = this.first - this.rows
+  update() {
+    let users = [...this.users];
+    users[this.users.indexOf(this.selectedUser)] = this.user;
+    this.service.updateUser(this.user).subscribe((res:any) => this.user = res)
+    this.users = users;
+    this.user = null;
+    this.displayDialog = false;
+    
   }
 
-  isFirstPage(): boolean{
-    return this.first === 0;
+  delete(){
+    let idToDelete = this.selectedUser.idUser
+    let index = this.users.indexOf(this.selectedUser)
+    this.service.deleteUser(idToDelete).subscribe(result => this.user = result)
+    this.users = this.users.filter((val, i) => i != index)
+    this.user = null
+    this.displayDialog = false
   }
-
-  isLastPage(): boolean{
-    return this.first === (this.users.length - this.rows)
-  }
-
-  loadUsersLazy(event : LazyLoadEvent){
-    this.loading = true
-    setTimeout(() => {
-      if(this.users.slice(event.first, (event.first + event.rows)))
-      this.loading = false;
-    })
-  }
-
-  onRowEditInit(user: User){
-    this.userEdit[user.idUser] = {...user}
-  }
-
-  onRowEditSave(user: User){
-    delete this.userEdit[user.idUser]
-  }
-
 }

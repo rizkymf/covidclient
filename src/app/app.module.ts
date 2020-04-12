@@ -21,6 +21,13 @@ import { TableModule } from 'primeng/table';
 import { CovidComponent } from './covid/covid.component';
 import { ChartModule } from 'primeng/chart';
 
+import {AccordionModule} from 'primeng/accordion';     
+import {MenuItem} from 'primeng/api';  
+import {DialogModule} from 'primeng/dialog';
+import {DynamicDialogModule} from 'primeng/dynamicdialog';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ButtonModule} from 'primeng/button';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,7 +50,12 @@ import { ChartModule } from 'primeng/chart';
     HomeModule,
     HttpClientModule,
     TableModule,
-    ChartModule
+    ChartModule,
+    AccordionModule,
+    DialogModule,
+    DynamicDialogModule,
+    BrowserAnimationsModule,
+    ButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

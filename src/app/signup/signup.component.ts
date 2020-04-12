@@ -17,6 +17,7 @@ export class SignupComponent implements OnInit {
     nama = ""
     uname = ""
     pwd = ""
+    posisi = "user"
     isLoadingResults = false
 
     constructor(private router: Router, private service : UserServiceService, private formBuilder: FormBuilder) { }
@@ -24,6 +25,7 @@ export class SignupComponent implements OnInit {
     ngOnInit(): void {
         this.userForm= this.formBuilder.group({
             nama:[null, Validators.required],
+            posisi:["user", Validators.required],
             uname:[null, Validators.required],
             pwd: [null, Validators.required]
         })
@@ -32,14 +34,9 @@ export class SignupComponent implements OnInit {
     onSubmit(){
         this.isLoadingResults = true
         this.service.addUser(this.userForm.value).subscribe((res:any) => {
-            const uname = res.uname;
             this.isLoadingResults = false;
-            this.router.navigate(['/'])
+            this.router.navigate(['./covid'])
         })
+        this.router.navigate(['./covid'])
     }
-
-    // addUsers(){
-    //     this.service.addUser(this.userFormGroup.value).subscribe(data => {
-    //         this.user = data;
-    // })
 }
